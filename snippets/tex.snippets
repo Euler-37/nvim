@@ -1,0 +1,121 @@
+snippet m2
+	${1:something}
+	$1
+snippet m3
+	${1:something}
+	$1
+	$1
+snippet m4
+	${1:something}
+	$1
+	$1
+	$1
+snippet f
+	\frac{${1}}{${2}}
+snippet eq
+	\begin{equation}
+		${1}
+	\end{equation}
+snippet al
+	\begin{align}
+		${1}
+	\end{align}
+snippet ale
+	$$
+	\left\{
+	\begin{aligned}
+		${1}&<++> &\\\
+		<++>&<++> &
+	\end{aligned}
+	\right.
+	$$
+snippet mat
+	$$
+	\begin{pmatrix}
+		${1}&<++> \\\
+		<++>&<++> \\\
+	\end{pmatrix}
+	$$
+snippet tab
+	$$
+	\begin{array}{c|c|c}
+		\hline
+		${1}&<++> &<++> \\\
+		\hline
+		<++>&<++> &<++> \\\
+		<++>&<++> &<++> \\\
+		\hline
+	\end{array}
+	$$
+snippet fig
+	\begin{figure}[htbp]
+		\centering
+		\includegraphics[width=0.3\linewidth]{${1}}
+		\caption{${2}}
+		\label{${3}}
+	\end{figure}
+snippet two
+	\begin{figure}[htbp]
+		\centering
+		\begin{minipage}[t]{0.4\textwidth}
+			\centering
+			\includegraphics[width=6cm]{${1}}
+			\caption{${2}}
+		\end{minipage}
+		\begin{minipage}[t]{0.4\textwidth}
+			\centering
+			\includegraphics[width=6cm]{${3}}
+			\caption{${4}}
+		\end{minipage}
+	\end{figure}
+snippet mould
+	\documentclass{article}
+	\usepackage{ctex}
+	\usepackage{graphicx}
+	\usepackage[colorlinks,linkcolor=blue]{hyperref}
+	\usepackage{slashed}
+	\usepackage{fancyhdr}
+	\usepackage{multicol}
+	\usepackage{tikz}
+	\usepackage{ulem}
+	\usepackage{pgfplots}
+	\usepackage{caption}
+	\usepackage{subfigure}
+	\usetikzlibrary{shapes.geometric, arrows}
+	\usepackage{tcolorbox}
+	\usepackage{colortbl}
+	\usepackage{fixltx2e}
+	\usepackage{extarrows}
+	\usepackage[margin=1in]{geometry}
+	\usepackage{amsmath,amsthm,amssymb}
+	\usepackage{bm}
+	\usepackage{titlesec}
+	\usepackage{titlesec}
+	\title{}
+	%\date{2020/07/06}
+	%\author{}
+	\pagestyle{fancy}
+	\lhead{Jianhua.YANG}
+	\chead{2020/07/10}
+	\rhead{\bfseries Homework}
+	\begin{document}
+		\maketitle
+		\newcommand*{\pjz}[3]{\langle #1|#2|#3 \rangle}
+		\newcommand*{\fd}[2]{\frac{\delta #1 }{\delta #2 }}
+		\newcommand*{\half}{\frac{1}{2}}
+		\newcommand*{\di}[1]{|#1\rangle}
+		\newcommand*{\dil}[1]{\langle#1|}
+		\newcommand*{\pa}{\partial}
+		\newcommand*{\pj}[2]{\langle #1|#2 \rangle}
+		\newcommand*{\pjj}[1]{\langle #1 \rangle}
+		\newcommand*{\ua}{\uparrow}
+		\newcommand*{\da}{\downarrow}
+		\newcommand*{\cp}[1]{#1^{\prime}}
+		\newcommand*{\bx}[1]{\begin{tcolorbox}\begin{center}#1\end{center}\end{tcolorbox}}
+		\newcommand*{\bfm}[1]{{\bm{#1}}}
+		\def\boxit#1{\smash{\fboxsep=1pt\llap{\rlap{\fbox{\strut\makebox[#1]{}}}~}}\ignorespaces}
+		\renewcommand\refname{Reference}
+		${1}
+		\bibliographystyle{plain}
+		\bibliography{mybib}
+	\end{document}

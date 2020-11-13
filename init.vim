@@ -1,0 +1,424 @@
+set nocompatible
+let $LANG='en_Us'
+set langmenu=en_Us
+let &t_SI.="\e[5 q" "SI = INSERT mode
+let &t_SR.="\e[4 q" "SR = REPLACE mode
+let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
+if has('gui_running')
+    autocmd GUIEnter * simalt ~x
+    set guioptions-=m
+    set guioptions-=T  "remove toolbar
+    set guioptions-=r  "remove right-hand scroll bar
+    set guioptions-=l
+    set guioptions-=b
+    set guioptions-=e "whether use tabpage
+endif
+set t_Co=256             " Use at least 256 colors
+filetype on
+filetype indent on
+filetype plugin on
+filetype plugin indent on
+let mapleader ="\<space>"
+
+""noremap i k
+""noremap k j
+""noremap j h
+""noremap h i
+"""
+""inoremap <C-i> <up>
+""inoremap <C-k> <down>
+""inoremap <C-j> <left>
+""inoremap <C-l> <right>
+nnoremap <C-up> 5k
+nnoremap <C-down> 5j
+nnoremap <C-left> 10h
+nnoremap <C-right> 10l
+autocmd BufEnter * hi Function guifg=#ccff00
+autocmd FileType * call LoadDict()
+autocmd FileType fortran call Run()
+autocmd FileType c call Run()
+autocmd FileType cpp call Run()
+autocmd FileType python call Run()
+""set pythonthreedll=python38.dll
+set ofu=syntaxcomplete#Complete
+autocmd FileType python3 set omnifunc=python3complete#Complete
+autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd BufEnter * :set conceallevel=0
+set completeopt=menuone,longest,preview
+"""-----------------plug-----------------"
+call plug#begin('~/.vim/plugged')
+Plug 'sainnhe/sonokai'
+Plug 'itchyny/lightline.vim'
+Plug 'Yggdroot/indentLine'
+Plug 'luochen1990/rainbow'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'itchyny/vim-cursorword'
+Plug 'voldikss/vim-floaterm'
+Plug 'majutsushi/tagbar'
+Plug 'godlygeek/tabular'
+Plug 'neomake/neomake'
+Plug 'ryanoasis/vim-devicons'
+Plug 'neoclide/coc.nvim',{'branch': 'release'}
+Plug 'gcmt/wildfire.vim'
+call plug#end()
+let g:plug_threads=8
+"""-----------------plug-----------------"
+"""+--------------------lightline--------------------+"
+
+set laststatus=2
+""let g:lightline = {
+""            \ 'colorscheme' : 'sonokai',
+""            \ 'active'      : {
+""            \ 'left'        : [ [ 'mode', 'paste' ],
+""            \             [ 'readonly', 'filename', 'modified', 'time' ] ]
+""            \ },
+""            \ 'component': {
+""            \   'time':strftime("%m/%d|%H:%M|%A")
+""            \ }
+""            \ }
+let g:webdevicons_enable = 1
+let g:webdevicons_enable_vimfiler = 1
+let g:lightline = {
+            \ 'colorscheme' : 'sonokai',
+            \ 'active'      : {
+            \ 'left'        : [ [ 'mode', 'paste' ],
+            \             [ 'readonly', 'filename', 'modified', 'time' ] ]
+            \ },
+            \ 'component': {
+            \   'time':strftime("%m/%d|%H:%M|%A")
+            \ },
+            \ 'component_function': {
+            \   'filetype': 'MyFiletype',
+            \   'fileformat': 'MyFileformat',
+            \ }
+            \ }
+function! MyFiletype()
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+endfunction
+
+function! MyFileformat()
+    return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+endfunction
+"""+--------------------lightline--------------------+"
+"""+--------------------indentLine--------------------+"
+let g:indentLine_char_list = ['|']
+let g:tex_conceal=''
+set conceallevel=0
+set concealcursor=inc
+""""let g:indentLine_color_gui = 'blue'
+""""let g:indentLine_bgcolor_gui = 'lightblue'
+"""+--------------------indentLine--------------------+"
+"""+--------------------Color--------------------+"
+if has('termguicolors')
+    set termguicolors
+endif
+" The configuration options should be placed before `colorscheme sonokai`.
+let g:sonokai_style                     = 'andromeda'
+let g:sonokai_enable_italic             = 1
+let g:sonokai_disable_italic_comment    = 1
+let g:sonokai_cursor                    = 'purple'
+let g:sonokai_menu_selection_background = 'blue'
+colorscheme sonokai
+"""+--------------------Color--------------------+"
+"""+--------------------rainbow--------------------+"
+let g:rainbow_active = 1
+let g:rainbow_conf = {
+            \   'guifgs': ['red','lightblue','lightmagenta','lightgreen','darkgray','darkgreen','darkcyan','darkred','brown','gray','darkgreen','darkcyan','darkred'],
+            \   'ctermfgs': ['red','lightblue','lightmagenta','lightgreen','darkgray','darkgreen','darkcyan','darkred','brown','gray','darkgreen','darkcyan','darkred'],
+            \   'operators': '_,\|+\|-\|*\|\*\*\|\/\|==_',
+            \   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+            \}
+"""+--------------------rainbow--------------------+"
+"""""+--------------------browser_search--------------------+"
+""let g:browser_search_default_engine="bing"
+""nmap <silent> <Leader>s <Plug>SearchNormal<CR>
+""vmap <silent> <Leader>s <Plug>SearchVisual<CR>
+"""""+--------------------browser_search--------------------+"
+"""+--------------------tagbar--------------------+"
+nmap <leader>t :TagbarToggle<CR>
+let g:tagbar_show_linenumbers = 2
+"""+--------------------tagbar--------------------+"
+"""+--------------------floaterm--------------------+"
+let g:floaterm_title=''
+let g:floaterm_height    = 0.8
+let g:floaterm_width     = 0.4
+let g:floaterm_position  = 'right'
+""let g:floaterm_wintype   = 'popup'
+""let g:floaterm_wintype = 'floating'
+""hi Floaterm guibg=black
+""hi FloatermBorder ctermbg=red ctermfg=green
+""hi FloatermNC guibg=skyblue
+let g:floaterm_borderchars = ['-','|','-','|','+','+','+','+']
+nmap <M-t> :FloatermNew<CR>
+"+--------------------floaterm--------------------+"
+"+--------------------markdown-preview--------------------+"
+""let g:mkdp_browser = 'chrome'
+"+--------------------markdown-preview--------------------+"
+"+--------------------complete----------------------------+"
+imap <Tab>   <Plug>EasyCompTabTrigger
+imap <S-Tab> <Plug>EasyCompShiftTabTrigger
+"+--------------------complete----------------------------+"
+"+--------------------neomake----------------------------+"
+call neomake#configure#automake('w')
+let g:neomake_open_list = 0
+""let g:neomake_logfile = '~/log/neomake.log'
+let g:neomake_error_sign = {
+            \ 'text': '',
+            \ 'texthl': 'NeomakeErrorSign',
+            \ }
+let g:neomake_warning_sign = {
+            \   'text': '',
+            \   'texthl': 'NeomakeWarningSign',
+            \ }
+let g:neomake_message_sign = {
+            \   'text': 'M',
+            \   'texthl': 'NeomakeMessageSign',
+            \ }
+let g:neomake_info_sign = {
+            \ 'text': 'I',
+            \ 'texthl': 'NeomakeInfoSign'
+            \ }
+"+--------------------neomake----------------------------+"
+"+--------------------tabnine-----------------------"
+"+--------------------coc-------------------------+"
+let g:coc_global_extensions=['coc-vimlsp','coc-json','coc-snippets','coc-tabnine','coc-python','coc-translator']
+""set signcolumn=yes
+""inoremap <silent><expr> <M-r> coc#refresh()
+inoremap <expr> <CR> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+""
+inoremap <silent><expr> <TAB>
+            \ pumvisible() ? coc#_select_confirm() :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
+
+""\ coc#expandableOrJumpable() ?
+"\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
+nmap <silent> gd <Plug>(coc-definition)
+nmap <leader>n <Plug>(coc-rename)
+nmap <leader>m :CocCommand document.renameCurrentWord<CR>
+nmap <leader>c <Plug>(coc-cursors-word)
+nmap <leader>s <Plug>(coc-translator-p)
+vmap <leader>s <Plug>(coc-translator-pv)
+" Use <c-space> to trigger completion.
+"+--------------------coc-------------------------+"
+"+--------------------wildfire--------------------+"
+
+let g:wildfire_objects = {
+            \ "*" : ["i'", 'i"', "i)", "i]", "i}","i>","ip","it"]
+            \ }
+""inoremap <M-m> <TAB>
+""set ballooneval
+""set rop=type:directx,renmode:5
+""set wildmenu
+""set wildmode=list:longest,full " Better command line completion
+"set wildoptions+=pum
+set noerrorbells
+""tab and space show
+set listchars=tab:~~,trail:.
+set list
+""set guifont=JetBrains_Mono_medium:h14:W500:cANSI:qDRAFT
+""set guifont=CaskaydiaCove_Nerd_Font_Mono:h14:cANSI:qDRAFT
+
+"let &t_ut=''
+set encoding=utf-8
+""set encoding=utf-8
+set fileencoding=utf-8
+set ambiwidth=double
+"set fileencodings=utf-8,gb18030,utf-16,big5
+set number
+set relativenumber
+syntax on
+set ruler
+set noshowmode
+set showcmd
+""mouse
+set mouse=a
+set selection=exclusive
+"set paste
+""backspace and indent
+set backspace=indent,eol,start
+set autoindent
+""tab and space
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+""search
+set hlsearch
+set incsearch
+set cul
+"set spell spelllang=en_us
+set noswapfile
+set nobackup
+set scrolloff=999
+""set cursorline
+set splitright
+set showmatch
+set fdm=indent
+""set foldopen=all
+""set foldclose=all
+set updatetime=100
+set lazyredraw
+set nowrap
+set dictionary=/mnt/g/software/Vim/vimfiles/dict/chinese.dict
+
+set clipboard+=unnamed
+set clipboard+=unnamedplus
+
+nnoremap <silent><leader><leader> /<++><CR>:nohlsearch<CR>c4l
+"hi MatchParen ctermbg=red ctermfg=yellow
+""braket complete
+inoremap ' ''<left>
+inoremap " ""<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+""complete
+""key word complete
+inoremap <M-k> <C-x><C-k>
+""line complete
+inoremap <M-l> <C-x><C-l>
+""dict complete
+inoremap <M-p> <C-x><C-o>
+""jump
+inoremap <M-o> <ESC> o
+""termial
+nnoremap <M-up> :res +5<CR>
+nnoremap <M-down> :res -5<CR>
+nnoremap <M-left> :vertical res -5<CR>
+nnoremap <M-right> :vertical res +5<CR>
+tnoremap <M-s> <C-w><C-w>
+nnoremap <M-s> <C-w><C-w>
+nnoremap <F5> :vert term<CR><C-w><C-w><CR>:vertical res +20<CR><C-w><C-w>
+""paste copy
+nnoremap <M-v> "+gp
+nnoremap <M-c> "+y<CR>
+""skip
+nnoremap <expr><TAB> col('.')== col('$')-1 ?'^':'$'
+"" buffer
+nnoremap bb <C-6>
+"" delete until end of line
+inoremap <M-n> <ESC>$a
+inoremap <M-m> <ESC>C
+"" delete blank line and eol space
+nnoremap ss :g/^$/d<CR>
+nnoremap sn :%s/\s\+$//g<CR>
+"" skip ()
+nnoremap <M-b> %
+inoremap <M-b> <Esc>%a
+"" replace cursor word
+nnoremap <M-r> :RepSub
+"" update vimrc
+nnoremap <leader>rc :vsplit $MYVIMRC<CR>
+nnoremap <leader>rs :source $MYVIMRC<CR>
+""add {['(" to a word
+""nnoremap <M-'> viw<esc>a'<esc>hbi'<esc>lel
+nnoremap <M-'> viwc''<ESC>hp
+nnoremap <M-"> viwc""<ESC>hp
+nnoremap <M-)> viwc()<ESC>hp
+nnoremap <M-]> viwc[]<ESC>hp
+nnoremap <M-}> viwc{}<ESC>hp
+nnoremap <M-$> viwc$$<ESC>hp
+inoremap <M-'> <ESC>viwc''<ESC>hpla
+inoremap <M-"> <ESC>viwc""<ESC>hpla
+inoremap <M-)> <ESC>viwc()<ESC>hpla
+inoremap <M-]> <ESC>viwc[]<ESC>hpla
+inoremap <M-}> <ESC>viwc{}<ESC>hpla
+inoremap <M-$> <ESC>viwc$$<ESC>hpla
+"(abcde)"
+"" 'delete' a 'word' in 'insert' ['mode']
+inoremap <M-w> <esc>ciw
+nnoremap <M-w> ciw
+nnoremap <M-o> i<cr>
+
+nnoremap m2 <C-v>1jI
+nnoremap m3 <C-v>2jI
+nnoremap m4 <C-v>3jI
+nnoremap m5 <C-v>4jI
+nnoremap m6 <C-v>5jI
+nnoremap m7 <C-v>6jI
+nnoremap m8 <C-v>7jI
+nnoremap m9 <C-v>8jI
+
+"" g+<Ctrl A>
+"special "definitions"
+set noic
+if expand("%:e") =~? '^\%(tex\|md\)$'
+    inoremap $ $$<left>
+    iab b \begin{<right>
+elseif expand("%:e") == "f90"
+    setlocal ic
+    let fortran_have_tabs=1
+    let fortran_free_source=1
+    let fortran_more_precise=1
+    let fortran_do_enddo=1
+    let fortran_indent_more=1
+    nnoremap gcc 0i!!<ESC>
+elseif expand("%:e") =~? '^\%(f\|for\)$'
+    setlocal ic
+    setlocal cc=6
+    setlocal cc+=73
+    hi ColorColumn guibg=lightgreen guifg=red
+    setlocal tabstop=6
+    setlocal softtabstop=6
+    setlocal shiftwidth=6
+elseif expand("%:e") =~? '^\%(c\|cpp\)$'
+    inoremap { {}<left><CR><up><right><Cr>
+    nnoremap gcc 0i//<ESC>
+endif
+func! Run()
+    exec "w"
+    setlocal signcolumn=yes
+    if expand("%:e") == "f90"
+        setlocal makeprg=gfortran\ /home/tli/fgl/src/*.f90\ %\ -Wall\ -fcheck=all\ -o\ t1
+    elseif expand("%:e")== "c"
+        setlocal makeprg=gcc\ %\ -Wall\ -o\ t1
+    elseif expand("%:e")== "cpp"
+        setlocal makeprg=g++\ %\ -Wall\ -o\ t1
+    elseif expand("%:e")== "py"
+        setlocal makeprg=python\ %
+    endif
+endfunc
+
+func! LoadDict()
+    silent exec "setlocal dictionary+=/mnt/g/software/Vim/vimfiles/dict/".expand("%:e").".dict"
+endfunc
+
+func! RepSub(para)
+    let word=expand('<cword>')
+    exec "normal {"
+    let codenumber0=string(line('.'))
+    exec "normal }"
+    let codenumber1=string(line('.'))
+    exec ":".codenumber0.",".codenumber1."s/\\<".word."\\>/".a:para."/g"
+endfunc
+command! -nargs=1 RepSub call RepSub(<f-args>)
+
+""func! RepSub2(para,para2)
+""    ""let word=expand('<cword>')
+""    exec "normal {"
+""    let codenumber0=string(line('.'))
+""    exec "normal }"
+""    let codenumber1=string(line('.'))
+""    exec ":".codenumber0.",".codenumber1."s/\\<".a:para."\\>/".a:para2."/g"
+""endfunc
+""command! -nargs=+ RepSub2 call RepSub2(<f-args>)
+
+func! RepAll(para)
+    let word=expand('<cword>')
+    exec ":%s/\\<".word."\\>/".a:para."/g"
+endfunc
+command! -nargs=1 RepAll call RepAll(<f-args>)
+
+func! Del()
+    let word=expand('<cword>')
+    exec ":%s/\\<".word."\\>//g"
+endfunc
+command! -nargs=0 Del call Del()

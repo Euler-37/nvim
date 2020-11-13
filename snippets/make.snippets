@@ -1,0 +1,38 @@
+snippet f
+	FC=gfortran
+	LIBPATH=D:\openblas
+	BLASLIB=$(LIBPATH)\libopenblas.a
+	LIB=$(BLASLIB)
+	DEBUGFLAGS=$(LIB) -Wall -fcheck=all -o
+	RUNFLAGS=$(LIB) -O3 -fexternal-blas -o
+	FILE=main.f90
+	.PHONY: d
+	d:
+		@ $(FC) $(FILE) $(DEBUGFLAGS) t1
+		@ t1
+	.PHONY: r
+	r:
+		@ $(FC) $(FILE) $(RUNFLAGS) t1
+		@ t1
+	.PHONY: clean
+	clean:
+		rm *.exe *.mod
+snippet c
+	CC=gcc
+	LIBPATH=D:\openblas
+	BLASLIB=$(LIBPATH)\libopenblas.a
+	LIB=$(BLASLIB)
+	DEBUGFLAGS=$(LIB) -Wall -o
+	RUNFLAGS=$(LIB) -O3 -o
+	FILE=main.f90
+	.PHONY: d
+	d:
+		@ $(CC) $(FILE) $(DEBUGFLAGS) t1
+		@ t1
+	.PHONY: r
+	r:
+		@ $(CC) $(FILE) $(RUNFLAGS) t1
+		@ t1
+	.PHONY: clean
+	clean:
+		rm *.exe

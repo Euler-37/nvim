@@ -1,0 +1,15 @@
+{
+    "coc.preferences.extensionUpdateCheck": "never",
+    "suggest.noselect": true,
+    "suggest.enablePreselect": false,
+    "snippets.snipmate.enable": true,
+    "languageserver": {
+        "fortran": {
+            "command": "~/.local/bin/fortls",
+            "args": ["--lowercase_intrinsics"],
+            "filetypes": ["fortran"],
+            "rootPatterns": ["~/.local/lib/python3.8/site-packages/fortls"]
+        }
+    }
+}
+

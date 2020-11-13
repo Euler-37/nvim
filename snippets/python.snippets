@@ -1,0 +1,32 @@
+snippet inp
+	import numpy as np
+snippet isp
+	import scipy as sp
+snippet iplt
+	import matplotlib.pyplot as plt
+snippet main
+	if __name__ =="__main__":
+snippet	for
+	for ${1:i} in range(${2:N}):
+		${3}
+snippet na
+	np.array(${1})
+snippet n0
+	np.zeros(${1})
+snippet n1
+	np.eye(${1})
+snippet	def
+	def ${1}:
+		${2}
+		return
+snippet read
+	${1:a}=np.loadtxt("${2:1.txt}")
+snippet plt
+	plt.plot(${1:a[:,0]},${2:a[:,1]},"o")
+	#plt.axis([${3}])
+	plt.xlabel("${4:x}")
+	plt.ylabel("${5:y}")
+	plt.show()
+snippet bar
+	plt.errorbar(${1:a[:,0]},${2:a[:,1]},yerr=${3:a[:,2]},fmt="o-",elinewidth=2,capsize=4)
+	plt.show()

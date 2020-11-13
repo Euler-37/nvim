@@ -1,0 +1,86 @@
+snippet	inc
+	#include <${1:stdio}.h>
+	${0}
+snippet	incpp
+	#include <iostream>
+	using namespace std;
+snippet	for
+	for(int ${1:i} = 0; $1 < ${2:N};++$1)
+	{
+		${0};
+	}
+snippet	if
+	if(${1})
+	{
+		${0};
+	}
+snippet	ife
+	if(${1})
+	{
+		${2};
+	}else
+	{
+		${0};
+	}
+snippet	ifc
+	if(${1})
+	{
+		${2};
+	}elseif(${3})
+	{
+		${0};
+	}
+snippet	i
+	int ${0};
+snippet	d
+	double ${0};
+snippet	a
+	${1:a}[${2}]
+snippet	m
+	*malloc(${1} ${2:a});
+	${0};
+	*free($2);
+snippet	main
+	int main(int argc, char *argv[])
+	{
+		${0}
+		return 0;
+	}
+snippet	void
+	void ${1}(${2})
+	{
+		${0};
+	}
+snippet	func
+	${1} ${2}(${3})
+	{
+		${0};
+		return ;
+	}
+snippet	ns
+	namespace ${1}
+	{
+		${0};
+	}
+snippet	tp
+	template <typename T>
+	/**
+	 *function
+	 */
+	${0}
+snippet	w
+	printf("${1:hello world}",${2});
+snippet wcpp
+	cout<<${1:"hello world"}<<endl;
+snippet	class
+	class ${1}
+	{
+		public:
+		${2};
+		private:
+		${3};
+	};
+snippet	file
+	FILE *fp = fopen("${1:a.txt}","${2:w}");
+	fprintf(fp,"${0}");
+	fclose(fp);

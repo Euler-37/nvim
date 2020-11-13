@@ -1,0 +1,192 @@
+snippet	main
+	program main
+		implicit none
+		${0}
+	end program
+snippet	ii
+	integer::
+snippet	rr
+	real(8)::
+snippet	cc
+	complex(8)::
+snippet	ss
+	character(len=${1:80})::${0}
+snippet	ia
+	integer,allocatable::
+snippet	ra
+	real(8),allocatable::
+snippet	ca
+	complex(8),allocatable::
+snippet	ip
+	integer,parameter::
+snippet	rp
+	real(8),parameter::
+snippet	cp
+	complex,parameter::
+snippet	ipn
+	implicit none
+snippet	pi
+	real(8),parameter::pi=acos(-1.d0)
+snippet	ran
+	call random_number(${1:r1})
+snippet	do
+	do ${1:i}=1,${2:N}
+		${0}
+	end do
+snippet do2 "do 2"
+	do i=1,${1:N}
+		do j=1,${2:N}
+			${0}
+		end do
+	end do
+snippet	doc
+	do concurrent(${1:i}=1:${2:N})
+		${0}
+	end do
+snippet	if "if"
+	if(${1})then
+		${0}
+	end if
+snippet	ife "if-else"
+	if(${1})then
+		${2}
+	else
+		${0}
+	end if
+snippet	ifc "if-elseif-then"
+	if(${1})then
+		${2}
+	elseif(${3})then
+		${0}
+	end if
+snippet	open
+	open(${1:10},file="${2:1.txt}")
+	${0}
+	close($1)
+snippet	mod
+	module ${1}
+		implicit none
+		${2}
+	${3:contains}
+	end module
+snippet	sub
+	subroutine ${1}(${2})
+		${0}
+	end subroutine
+snippet	fi
+	function ${1}(${2}) result(f1)
+		integer::f1
+		${0}
+	end function
+snippet	fr
+	function ${1}(${2}) result(f1)
+		real(8)::f1
+		${0}
+	end function
+snippet	fc
+	function ${1}(${2}) result(f1)
+		complex(8)::f1
+		${0}
+	end function
+snippet	type
+	type ${1}
+		${0}
+	end type
+snippet	a
+	${1:a}(${2})${0}
+snippet	w
+	write(${1:*},*)${0}
+snippet	wf
+	write(${1:*},"(${2})")${3}
+snippet	re
+	read(*,*)${0}
+snippet	rf
+	read(${1:10},*)${0}
+snippet	mat
+	module matmod
+		implicit none
+	contains
+		subroutine eig(a,e,N)
+			integer,intent(in)::N
+			real(8),intent(inout)::a(:,:)
+			real(8),intent(out):: e(:)
+			real(8):: work(5*N*N)
+			integer:: iflag
+			call dsyev("V","U",N,a,N,e,work,5*N*N,iflag)
+		end subroutine
+		subroutine inv(a,N)
+			integer,intent(in)::N
+			real(8),intent(inout)::a(:,:)
+			integer:: ipiv(N),info
+			real(8):: work(N)
+			call dgetrf(N,N,a,N,ipiv,info)
+			call dgetri(N,a,N,ipiv,work,N,info)
+		end subroutine
+		function ddgemm(a,b)result(c)
+			real(8), intent(in) :: a(:,:)
+			real(8), intent(in) :: b(:,:)
+			real(8),allocatable :: c(:,:)
+			character(len=1) :: o_transa
+			character(len=1) :: o_transb
+			real(8) :: o_alpha,o_beta
+			integer :: m,n,k,lda,ldb,ldc
+			o_alpha = 1.d0
+			o_beta  = 0.d0
+			o_transa = 'n'
+			o_transb = 'n'
+			k = size(a,2)
+			lda = size(a,1) !max(1,size(a,1))
+			ldb = k !size(b,1) !max(1,size(b,1))
+			ldc = lda !max(1,size(a,1))
+			m = lda !size(a,1)
+			n = size(b,2)
+			allocate(c(m,n))
+			call dgemm(o_transa,o_transb,m,n,k,o_alpha,a,lda,b,ldb,o_beta,c,ldc)
+		end function
+		function ddet(a,n1)result(d1)
+			implicit none
+			integer,intent(in)::n1
+			integer::ipiv(n1),info,i
+			real(8)::d1,a(n1,n1)
+			call dgetrf(n1,n1,a,n1,ipiv,info)
+			if(info/=0)then
+				d1=0.d0
+			else
+				d1=1.d0
+				do i=1,n1
+					if(ipiv(i)/= i)then
+						d1=-d1*a(i,i)
+					else
+						d1= d1*a(i,i)
+					end if
+				end do
+			end if
+		end function
+	end module
+snippet	ot
+	call omp_set_num_threads(4)
+snippet	ore
+	!\$omp parallel do reduction(${1:+}:${2:total})
+		${0}
+	!\$omp end parallel do
+snippet	odo
+	!\$omp parallel do
+		${0}
+	!\$omp end parallel do
+snippet	mpi
+	include 'mpif.h'
+	integer::nprocs,ierr,myid
+	real(8)::f1,fs,f2,f2s,error
+	call MPI_INIT(ierr)
+	call MPI_COMM_SIZE(MPI_COMM_WORLD,nprocs,ierr)
+	call MPI_COMM_RANK(MPI_COMM_WORLD,myid,ierr)
+	f1=${1:r1}
+	f2=$1**2
+	call MPI_ALLREDUCE(f1,fs,1,MPI_DOUBLE_PRECISION,MPI_SUM,MPI_COMM_WORLD,ierr)
+	call MPI_ALLREDUCE(f2,f2s,1,MPI_DOUBLE_PRECISION,MPI_SUM,MPI_COMM_WORLD,ierr)
+	f1=fs/nprocs
+	f2=f2s/nprocs
+	if(myid==0)then
+		write(10,*)f1,error
+	end if
+	call MPI_FINALIZE(ierr)
