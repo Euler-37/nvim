@@ -19,7 +19,6 @@ filetype indent on
 filetype plugin on
 filetype plugin indent on
 let mapleader ="\<space>"
-
 ""noremap i k
 ""noremap k j
 ""noremap j h
@@ -29,10 +28,6 @@ let mapleader ="\<space>"
 ""inoremap <C-k> <down>
 ""inoremap <C-j> <left>
 ""inoremap <C-l> <right>
-nnoremap <C-up> 5k
-nnoremap <C-down> 5j
-nnoremap <C-left> 10h
-nnoremap <C-right> 10l
 autocmd BufEnter * hi Function guifg=#ccff00
 autocmd FileType * call LoadDict()
 autocmd FileType fortran call Run()
@@ -43,7 +38,7 @@ autocmd FileType python call Run()
 set ofu=syntaxcomplete#Complete
 autocmd FileType python3 set omnifunc=python3complete#Complete
 autocmd FileType c set omnifunc=ccomplete#Complete
-autocmd BufEnter * :set conceallevel=0
+""autocmd BufEnter * :set conceallevel=0
 set completeopt=menuone,longest,preview
 """-----------------plug-----------------"
 call plug#begin('~/.vim/plugged')
@@ -65,7 +60,6 @@ call plug#end()
 let g:plug_threads=8
 """-----------------plug-----------------"
 """+--------------------lightline--------------------+"
-
 set laststatus=2
 ""let g:lightline = {
 ""            \ 'colorscheme' : 'sonokai',
@@ -96,7 +90,6 @@ let g:lightline = {
 function! MyFiletype()
     return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
 endfunction
-
 function! MyFileformat()
     return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
 endfunction
@@ -191,14 +184,12 @@ inoremap <silent><expr> <TAB>
             \ pumvisible() ? coc#_select_confirm() :
             \ <SID>check_back_space() ? "\<TAB>" :
             \ coc#refresh()
-
 ""\ coc#expandableOrJumpable() ?
 "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
 function! s:check_back_space() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
 let g:coc_snippet_next = '<tab>'
 nmap <silent> gd <Plug>(coc-definition)
 nmap <leader>n <Plug>(coc-rename)
@@ -209,7 +200,6 @@ vmap <leader>s <Plug>(coc-translator-pv)
 " Use <c-space> to trigger completion.
 "+--------------------coc-------------------------+"
 "+--------------------wildfire--------------------+"
-
 let g:wildfire_objects = {
             \ "*" : ["i'", 'i"', "i)", "i]", "i}","i>","ip","it"]
             \ }
@@ -225,7 +215,6 @@ set listchars=tab:~~,trail:.
 set list
 ""set guifont=JetBrains_Mono_medium:h14:W500:cANSI:qDRAFT
 ""set guifont=CaskaydiaCove_Nerd_Font_Mono:h14:cANSI:qDRAFT
-
 "let &t_ut=''
 set encoding=utf-8
 ""set encoding=utf-8
@@ -268,13 +257,15 @@ set updatetime=100
 set lazyredraw
 set nowrap
 set dictionary=/mnt/g/software/Vim/vimfiles/dict/chinese.dict
-
 set clipboard+=unnamed
 set clipboard+=unnamedplus
-
 nnoremap <silent><leader><leader> /<++><CR>:nohlsearch<CR>c4l
 "hi MatchParen ctermbg=red ctermfg=yellow
 ""braket complete
+nnoremap <C-up> 5k
+nnoremap <C-down> 5j
+nnoremap <C-left> 10h
+nnoremap <C-right> 10l
 inoremap ' ''<left>
 inoremap " ""<left>
 inoremap ( ()<left>
@@ -308,8 +299,8 @@ nnoremap bb <C-6>
 inoremap <M-n> <ESC>$a
 inoremap <M-m> <ESC>C
 "" delete blank line and eol space
-nnoremap ss :g/^$/d<CR>
-nnoremap sn :%s/\s\+$//g<CR>
+nnoremap ss :g/^$/d<CR>:nohl<CR>
+nnoremap sn :%s/\s\+$//g<CR>:nohl<CR>
 "" skip ()
 nnoremap <M-b> %
 inoremap <M-b> <Esc>%a
@@ -337,7 +328,6 @@ inoremap <M-$> <ESC>viwc$$<ESC>hpla
 inoremap <M-w> <esc>ciw
 nnoremap <M-w> ciw
 nnoremap <M-o> i<cr>
-
 nnoremap m2 <C-v>1jI
 nnoremap m3 <C-v>2jI
 nnoremap m4 <C-v>3jI
@@ -346,7 +336,6 @@ nnoremap m6 <C-v>5jI
 nnoremap m7 <C-v>6jI
 nnoremap m8 <C-v>7jI
 nnoremap m9 <C-v>8jI
-
 "" g+<Ctrl A>
 "special "definitions"
 set noic
@@ -377,7 +366,7 @@ func! Run()
     exec "w"
     setlocal signcolumn=yes
     if expand("%:e") == "f90"
-        setlocal makeprg=gfortran\ /home/tli/fgl/src/*.f90\ %\ -Wall\ -fcheck=all\ -o\ t1
+        setlocal makeprg=gfortran\ %\ -Wall\ -fopenmp\ -fcheck=all\ -o\ t1
     elseif expand("%:e")== "c"
         setlocal makeprg=gcc\ %\ -Wall\ -o\ t1
     elseif expand("%:e")== "cpp"
@@ -400,7 +389,6 @@ func! RepSub(para)
     exec ":".codenumber0.",".codenumber1."s/\\<".word."\\>/".a:para."/g"
 endfunc
 command! -nargs=1 RepSub call RepSub(<f-args>)
-
 ""func! RepSub2(para,para2)
 ""    ""let word=expand('<cword>')
 ""    exec "normal {"
@@ -410,7 +398,6 @@ command! -nargs=1 RepSub call RepSub(<f-args>)
 ""    exec ":".codenumber0.",".codenumber1."s/\\<".a:para."\\>/".a:para2."/g"
 ""endfunc
 ""command! -nargs=+ RepSub2 call RepSub2(<f-args>)
-
 func! RepAll(para)
     let word=expand('<cword>')
     exec ":%s/\\<".word."\\>/".a:para."/g"
