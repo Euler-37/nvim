@@ -143,7 +143,7 @@ let g:floaterm_position  = 'right'
 ""hi FloatermBorder ctermbg=red ctermfg=green
 ""hi FloatermNC guibg=skyblue
 let g:floaterm_borderchars = ['-','|','-','|','+','+','+','+']
-nmap <M-t> :FloatermNew<CR>
+nmap <M-t> :FloatermNew bash<CR>
 "+--------------------floaterm--------------------+"
 "+--------------------markdown-preview--------------------+"
 ""let g:mkdp_browser = 'chrome'
@@ -191,7 +191,11 @@ function! s:check_back_space() abort
     return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 let g:coc_snippet_next = '<tab>'
+""let g:coc_borderchars=['-','|','-','|','+','+','+','+']
 nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 nmap <leader>n <Plug>(coc-rename)
 nmap <leader>m :CocCommand document.renameCurrentWord<CR>
 nmap <leader>c <Plug>(coc-cursors-word)
@@ -266,6 +270,10 @@ nnoremap <C-up> 5k
 nnoremap <C-down> 5j
 nnoremap <C-left> 10h
 nnoremap <C-right> 10l
+
+nnoremap <M-down> ddp
+nnoremap <expr><M-up> line('.')== 1 ?'0':'ddkP'
+
 inoremap ' ''<left>
 inoremap " ""<left>
 inoremap ( ()<left>
@@ -281,10 +289,10 @@ inoremap <M-p> <C-x><C-o>
 ""jump
 inoremap <M-o> <ESC> o
 ""termial
-nnoremap <M-up> :res +5<CR>
-nnoremap <M-down> :res -5<CR>
-nnoremap <M-left> :vertical res -5<CR>
-nnoremap <M-right> :vertical res +5<CR>
+nnoremap <S-up> :res +5<CR>
+nnoremap <S-down> :res -5<CR>
+nnoremap <S-left> :vertical res -5<CR>
+nnoremap <S-right> :vertical res +5<CR>
 tnoremap <M-s> <C-w><C-w>
 nnoremap <M-s> <C-w><C-w>
 nnoremap <F5> :vert term<CR><C-w><C-w><CR>:vertical res +20<CR><C-w><C-w>
@@ -359,7 +367,7 @@ elseif expand("%:e") =~? '^\%(f\|for\)$'
     setlocal softtabstop=6
     setlocal shiftwidth=6
 elseif expand("%:e") =~? '^\%(c\|cpp\)$'
-    inoremap { {}<left><CR><up><right><Cr>
+    inoremap { {}<left><CR><CR><up><BS><CR>
     nnoremap gcc 0i//<ESC>
 endif
 func! Run()
