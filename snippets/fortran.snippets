@@ -174,19 +174,14 @@ snippet	odo
 		${0}
 	!\$omp end parallel do
 snippet	mpi
-	include 'mpif.h'
 	integer::nprocs,ierr,myid
-	real(8)::f1,fs,f2,f2s,error
-	call MPI_INIT(ierr)
-	call MPI_COMM_SIZE(MPI_COMM_WORLD,nprocs,ierr)
-	call MPI_COMM_RANK(MPI_COMM_WORLD,myid,ierr)
-	f1=${1:r1}
-	f2=$1**2
-	call MPI_ALLREDUCE(f1,fs,1,MPI_DOUBLE_PRECISION,MPI_SUM,MPI_COMM_WORLD,ierr)
-	call MPI_ALLREDUCE(f2,f2s,1,MPI_DOUBLE_PRECISION,MPI_SUM,MPI_COMM_WORLD,ierr)
-	f1=fs/nprocs
-	f2=f2s/nprocs
-	if(myid==0)then
-		write(10,*)f1,error
-	end if
-	call MPI_FINALIZE(ierr)
+	call mpi_init(ierr)
+	call mpi_comm_size(mpi_comm_world,nprocs,ierr)
+	call mpi_comm_rank(mpi_comm_world,myid,ierr)
+	${0}
+	call mpi_finalize(ierr)
+snippet	bcast
+	call mpi_bcast(${1:para},${2:number},${3:datatype},${4:cpuid},mpi_comm_world,ierr)
+snippet	gather
+	call mpi_gather(${1:para},${2:number},${3:datatype}.${4:para_recv},${5:number_recv},${6:datatype_recv},mpi_comm_world,ierr)
+
