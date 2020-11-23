@@ -183,5 +183,5 @@ snippet	mpi
 snippet	bcast
 	call mpi_bcast(${1:para},${2:number},${3:datatype},${4:cpuid},mpi_comm_world,ierr)
 snippet	gather
-	call mpi_gather(${1:para},${2:number},${3:datatype}.${4:para_recv},${5:number_recv},${6:datatype_recv},mpi_comm_world,ierr)
+	call mpi_gather(${1:para},${2:number},${3:datatype},${4:para_recv},$2,$3,${4:0}mpi_comm_world,ierr)
 
