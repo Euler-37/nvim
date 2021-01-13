@@ -36,14 +36,21 @@ let g:lightline = {
             \ 'left'        : [ [ 'mode', 'paste' ],
             \             [ 'readonly', 'filename', 'modified', 'time' ] ]
             \ },
-            \ 'component': {
-            \   'time':strftime("%m/%d|%H:%M|%A")
-            \ },
             \ 'component_function': {
+            \   'time':'Showtime',
             \   'filetype': 'MyFiletype',
             \   'fileformat': 'MyFileformat',
             \ }
             \ }
+let g:lightline.subseparator = {
+            \   'left': '', 'right': '' 
+            \}
+let g:lightline.separator = {
+            \   'left': '', 'right': ''
+            \}
+function! Showtime()
+    return strftime("%m/%d|%H:%M|%A")
+endfunction
 function! MyFiletype()
     return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
 endfunction
@@ -111,7 +118,7 @@ imap <S-Tab> <Plug>EasyCompShiftTabTrigger
 "+--------------------complete----------------------------+"
 "+--------------------neomake----------------------------+"
 call neomake#configure#automake('w')
-let g:neomake_open_list = 1
+let g:neomake_open_list = 0
 ""let g:neomake_logfile = '~/log/neomake.log'
 let g:neomake_error_sign = {
             \ 'text': '',
@@ -132,7 +139,7 @@ let g:neomake_info_sign = {
 "+--------------------neomake----------------------------+"
 "+--------------------tabnine-----------------------"
 "+--------------------coc-------------------------+"
-let g:coc_global_extensions=['coc-vimlsp','coc-json','coc-snippets','coc-tabnine','coc-python','coc-translator']
+let g:coc_global_extensions=['coc-vimlsp','coc-json','coc-snippets','coc-tabnine','coc-python','coc-translator','coc-git','coc-calc']
 ""set signcolumn=yes
 ""inoremap <silent><expr> <M-r> coc#refresh()
 inoremap <expr> <CR> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -158,9 +165,19 @@ nmap <leader>m :CocCommand document.renameCurrentWord<CR>
 nmap <leader>c <Plug>(coc-cursors-word)
 nmap <leader>s <Plug>(coc-translator-p)
 vmap <leader>s <Plug>(coc-translator-pv)
+"-----------------------coc-git-------------------------------------"
+nmap <silent> <leader>p <Plug>(coc-git-prevchunk)
+nmap <silent> <leader>n <Plug>(coc-git-nextchunk)
+xmap <silent> <leader>i <Plug>(coc-git-chunk-inner)
+xmap <silent> <leader>o <Plug>(coc-git-chunk-outer)
+
+nmap <leader>ca <plug>(coc-calc-result-append)
+nmap <leader>cr <plug>(coc-calc-result-replace)
+
 " Use <c-space> to trigger completion.
 "+--------------------coc-------------------------+"
 "+--------------------wildfire--------------------+"
 let g:wildfire_objects = {
             \ "*" : ["i'", 'i"', "i)", "i]", "i}","i>","ip","it"]
             \ }
+"""--------------------vim-tex"""

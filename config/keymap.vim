@@ -9,7 +9,8 @@ nnoremap <C-right> 10l
 
 nnoremap <M-down> ddp
 nnoremap <expr><M-up> line('.')== 1 ?'0':'ddkP'
-
+nnoremap <M-right> xp
+nnoremap <M-left> xhP
 inoremap ' ''<left>
 inoremap " ""<left>
 inoremap ( ()<left>
@@ -40,7 +41,7 @@ nnoremap <expr><TAB> col('.')== col('$')-1 ?'^':'$'
 "" buffer
 nnoremap bb <C-6>
 "" delete until end of line
-inoremap <M-n> <ESC>$a
+inoremap <M-n> <ESC>A
 inoremap <M-m> <ESC>C
 "" delete blank line and eol space
 nnoremap ss :g/^$/d<CR>:nohl<CR>
@@ -55,18 +56,18 @@ nnoremap <leader>rc :vsplit $MYVIMRC<CR>
 nnoremap <leader>rs :source $MYVIMRC<CR>
 ""add {['(" to a word
 ""nnoremap <M-'> viw<esc>a'<esc>hbi'<esc>lel
-nnoremap <M-'> viwc''<ESC>hp
-nnoremap <M-"> viwc""<ESC>hp
-nnoremap <M-)> viwc()<ESC>hp
-nnoremap <M-]> viwc[]<ESC>hp
-nnoremap <M-}> viwc{}<ESC>hp
-nnoremap <M-$> viwc$$<ESC>hp
-inoremap <M-'> <ESC>viwc''<ESC>hpla
-inoremap <M-"> <ESC>viwc""<ESC>hpla
-inoremap <M-)> <ESC>viwc()<ESC>hpla
-inoremap <M-]> <ESC>viwc[]<ESC>hpla
-inoremap <M-}> <ESC>viwc{}<ESC>hpla
-inoremap <M-$> <ESC>viwc$$<ESC>hpla
+nnoremap <M-'> ciw''<ESC>hp
+nnoremap <M-"> ciw""<ESC>hp
+nnoremap <M-)> ciw()<ESC>hp
+nnoremap <M-]> ciw[]<ESC>hp
+nnoremap <M-}> ciw{}<ESC>hp
+nnoremap <M-$> ciw$$<ESC>hp
+inoremap <M-'> <ESC>ciw''<ESC>hpla
+inoremap <M-"> <ESC>ciw""<ESC>hpla
+inoremap <M-)> <ESC>ciw()<ESC>hpla
+inoremap <M-]> <ESC>ciw[]<ESC>hpla
+inoremap <M-}> <ESC>ciw{}<ESC>hpla
+inoremap <M-$> <ESC>ciw$$<ESC>hpla
 "(abcde)"
 "" 'delete' a 'word' in 'insert' ['mode']
 inoremap <M-w> <esc>ciw
@@ -96,10 +97,10 @@ elseif expand("%:e") =~? '^\%(f\|for\)$'
     setlocal ic
     setlocal cc=6
     setlocal cc+=73
-    hi ColorColumn guibg=lightgreen guifg=red
-    setlocal tabstop=6
-    setlocal softtabstop=6
-    setlocal shiftwidth=6
+    hi ColorColumn guifg=lightgreen guibg=red
+    setlocal tabstop=2
+    setlocal softtabstop=2
+    setlocal shiftwidth=2
 elseif expand("%:e") =~? '^\%(c\|cpp\)$'
     inoremap { {}<left><CR><CR><up><BS><CR>
     nnoremap gcc 0i//<ESC>
@@ -141,3 +142,12 @@ func! Del()
     exec ":%s/\\<".word."\\>//g"
 endfunc
 command! -nargs=0 Del call Del()
+
+"function! CleverTab()
+"        if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
+"                return "\<Tab>"
+"        else
+"                return "\<C-N>"
+"        endif
+"endfunction
+"inoremap <Tab> <C-R>=CleverTab()<CR>

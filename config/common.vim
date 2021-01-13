@@ -1,9 +1,9 @@
 set nocompatible
 let $LANG='en_Us'
 set langmenu=en_Us
-let &t_SI.="\e[5 q" "SI = INSERT mode
-let &t_SR.="\e[4 q" "SR = REPLACE mode
-let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
+""let &t_SI.="\e[5 q" "SI = INSERT mode
+""let &t_SR.="\e[4 q" "SR = REPLACE mode
+""let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 set t_Co=256             " Use at least 256 colors
 filetype on
 filetype indent on
@@ -71,6 +71,8 @@ set nowrap
 set dictionary=/mnt/g/software/Vim/vimfiles/dict/chinese.dict
 set clipboard+=unnamed
 set clipboard+=unnamedplus
+""set cindent
+""set cinoptions={0,1s,t0,n-2,p2s,(03s,=,5s,>1s,=1s,:1s)}
 func! LoadDict()
     silent exec "setlocal dictionary+=/mnt/g/software/Vim/vimfiles/dict/".expand("%:e").".dict"
 endfunc
