@@ -76,6 +76,7 @@ let g:sonokai_enable_italic             = 1
 let g:sonokai_disable_italic_comment    = 1
 let g:sonokai_cursor                    = 'purple'
 let g:sonokai_menu_selection_background = 'blue'
+let g:sonokai_transparent_background    = 1
 colorscheme sonokai
 """+--------------------Color--------------------+"
 """+--------------------rainbow--------------------+"
@@ -102,12 +103,12 @@ let g:floaterm_height    = 0.8
 let g:floaterm_width     = 0.4
 let g:floaterm_position  = 'right'
 ""let g:floaterm_wintype   = 'popup'
-""let g:floaterm_wintype = 'floating'
+let g:floaterm_wintype = 'floating'
 ""hi Floaterm guibg=black
 ""hi FloatermBorder ctermbg=red ctermfg=green
 ""hi FloatermNC guibg=skyblue
 let g:floaterm_borderchars = ['-','|','-','|','+','+','+','+']
-nmap <M-t> :FloatermNew bash<CR>
+nmap <M-t> :FloatermNew sh<CR>
 "+--------------------floaterm--------------------+"
 "+--------------------markdown-preview--------------------+"
 ""let g:mkdp_browser = 'chrome'

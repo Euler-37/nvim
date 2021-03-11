@@ -1,38 +1,36 @@
+snippet main
+	main:
+		@echo "\033[32mStart Build\033[0m"
+		cd src && $(MAKE)
+		@echo "\033[32mBulit\033[0m"
+	.PHONY:run
+	run:
+		@echo "\033[32mStart Run\033[0m"
+		cd bin && ./main
+		@echo "\033[32mFinished\033[0m"
+	.PHONY:clean
+	clean:
+		@echo "\033[32mStart Clean\033[0m"
+		cd src && $(MAKE) clean
+		@echo "\033[32mCleaned\033[0m"
+	.PHONY:plot
+	plot:
+		cd data/output && python.exe plt_spec.py
 snippet f
 	FC=gfortran
-	LIBPATH=D:\openblas
-	BLASLIB=$(LIBPATH)\libopenblas.a
-	LIB=$(BLASLIB)
-	DEBUGFLAGS=$(LIB) -Wall -fcheck=all -o
-	RUNFLAGS=$(LIB) -O3 -fexternal-blas -o
-	FILE=main.f90
-	.PHONY: d
-	d:
-		@ $(FC) $(FILE) $(DEBUGFLAGS) t1
-		@ t1
-	.PHONY: r
-	r:
-		@ $(FC) $(FILE) $(RUNFLAGS) t1
-		@ t1
-	.PHONY: clean
+	TAR=../bin/main
+	OBJ=../obj/
+	MOD=../mod
+	MAIN=main.f90
+	SRCS= parameter_mod.f90 bit_mod.f90 ternary_mod.f90 lattice_mod.f90 matrix_mod.f90 algorithm_mod.f90 \
+	 math_mod.f90 lanczos_mod.f90 $(MAIN)
+	OBJS=$(patsubst %.f90,$(OBJ)%.o,$(SRCS))
+	LIB=-lopenblas
+	FFLAGS=$(LIB) -ffast-math -frecursive -fexternal-blas -fopenmp -O3
+	$(TAR):$(OBJS)
+		$(FC) -J$(MOD) $^ $(FFLAGS) -o $@
+	$(OBJ)%.o:%.f90
+		$(FC) -c -J$(MOD) $^ $(FFLAGS) -o $@
+	.PHONY:clean
 	clean:
-		rm *.exe *.mod
-snippet c
-	CC=gcc
-	LIBPATH=D:\openblas
-	BLASLIB=$(LIBPATH)\libopenblas.a
-	LIB=$(BLASLIB)
-	DEBUGFLAGS=$(LIB) -Wall -o
-	RUNFLAGS=$(LIB) -O3 -o
-	FILE=main.f90
-	.PHONY: d
-	d:
-		@ $(CC) $(FILE) $(DEBUGFLAGS) t1
-		@ t1
-	.PHONY: r
-	r:
-		@ $(CC) $(FILE) $(RUNFLAGS) t1
-		@ t1
-	.PHONY: clean
-	clean:
-		rm *.exe
+		rm $(MOD)/*.mod $(OBJ)*.o $(TAR)

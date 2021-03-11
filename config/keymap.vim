@@ -2,15 +2,28 @@ let mapleader ="\<space>"
 nnoremap <silent><leader><leader> /<++><CR>:nohlsearch<CR>c4l
 "hi MatchParen ctermbg=red ctermfg=yellow
 ""braket complete
+
+noremap <M-down> ddp
+noremap <expr><M-up> line('.')== 1 ?'0':'ddkP'
+noremap <M-right> xp
+noremap <M-left> xhP
+
+noremap i k
+noremap k j
+noremap j h
+noremap h i
+
+inoremap <M-i> <up>
+inoremap <M-k> <down>
+inoremap <M-j> <left>
+inoremap <M-l> <right>
+
+inoremap <M-h> <Backspace>
 nnoremap <C-up> 5k
 nnoremap <C-down> 5j
 nnoremap <C-left> 10h
 nnoremap <C-right> 10l
 
-nnoremap <M-down> ddp
-nnoremap <expr><M-up> line('.')== 1 ?'0':'ddkP'
-nnoremap <M-right> xp
-nnoremap <M-left> xhP
 inoremap ' ''<left>
 inoremap " ""<left>
 inoremap ( ()<left>
@@ -18,9 +31,9 @@ inoremap [ []<left>
 inoremap { {}<left>
 ""complete
 ""key word complete
-inoremap <M-k> <C-x><C-k>
+inoremap <C-k> <C-x><C-k>
 ""line complete
-inoremap <M-l> <C-x><C-l>
+inoremap <C-l> <C-x><C-l>
 ""dict complete
 inoremap <M-p> <C-x><C-o>
 ""jump
