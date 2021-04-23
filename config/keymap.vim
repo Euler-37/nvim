@@ -2,11 +2,10 @@ let mapleader ="\<space>"
 nnoremap <silent><leader><leader> /<++><CR>:nohlsearch<CR>c4l
 "hi MatchParen ctermbg=red ctermfg=yellow
 ""braket complete
-
-noremap <M-down> ddp
-noremap <expr><M-up> line('.')== 1 ?'0':'ddkP'
-noremap <M-right> xp
-noremap <M-left> xhP
+nnoremap <expr><leader><up> line('.')== 1 ?'0':'ddkP'
+nnoremap <leader><down> ddp
+nnoremap <leader><right> xp
+nnoremap <leader><left> xhP
 
 noremap i k
 noremap k j
@@ -17,12 +16,17 @@ inoremap <M-i> <up>
 inoremap <M-k> <down>
 inoremap <M-j> <left>
 inoremap <M-l> <right>
+inoremap <M-I> <up><up><up><up><up>
+inoremap <M-K> <down><down><down><down><down>
+inoremap <M-J> <left><left><left><left><left>
+inoremap <M-L> <right><right><right><right><right>
 
 inoremap <M-h> <Backspace>
-nnoremap <C-up> 5k
-nnoremap <C-down> 5j
-nnoremap <C-left> 10h
-nnoremap <C-right> 10l
+
+nnoremap <C-up> 5<up>
+nnoremap <C-down> 5<down>
+nnoremap <C-left> 10<left>
+nnoremap <C-right> 10<right>
 
 inoremap ' ''<left>
 inoremap " ""<left>
@@ -95,6 +99,7 @@ nnoremap m7 <C-v>6jI
 nnoremap m8 <C-v>7jI
 nnoremap m9 <C-v>8jI
 "" g+<Ctrl A>
+nnoremap <F5> :Run<CR>
 if expand("%:e") =~? '^\%(tex\|md\)$'
     inoremap $ $$<left>
     iab b \begin{<right>
@@ -130,8 +135,11 @@ func! Run()
         setlocal makeprg=g++\ %\ -Wall\ -o\ t1
     elseif expand("%:e")== "py"
         setlocal makeprg=python\ %
+    elseif expand("%:e")== "tex"
+        setlocal makeprg=xelatex.exe\ -synctex=1\ --interaction=nonstopmode\ % 
     endif
 endfunc
+command! -nargs=0 Run call Run()
 
 
 func! RepSub(para)

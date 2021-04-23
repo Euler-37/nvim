@@ -1,3 +1,5 @@
+""let g:plug_url_format="https://git@::hub.fastgit.org/%s.git"
+
 call plug#begin('~/.vim/plugged')
 Plug 'sainnhe/sonokai'
 Plug 'itchyny/lightline.vim'
@@ -10,26 +12,14 @@ Plug 'voldikss/vim-floaterm'
 Plug 'majutsushi/tagbar'
 Plug 'godlygeek/tabular'
 Plug 'neomake/neomake'
-Plug 'ryanoasis/vim-devicons'
 Plug 'neoclide/coc.nvim',{'branch': 'release'}
 Plug 'gcmt/wildfire.vim'
+Plug '~/.vim/plugged/markdown-preview.nvim', { 'do': { -> mkdp#util#install() },'for': ['markdown', 'plug']}
 call plug#end()
 let g:plug_threads=8
 """-----------------plug-----------------"
 """+--------------------lightline--------------------+"
 set laststatus=2
-""let g:lightline = {
-""            \ 'colorscheme' : 'sonokai',
-""            \ 'active'      : {
-""            \ 'left'        : [ [ 'mode', 'paste' ],
-""            \             [ 'readonly', 'filename', 'modified', 'time' ] ]
-""            \ },
-""            \ 'component': {
-""            \   'time':strftime("%m/%d|%H:%M|%A")
-""            \ }
-""            \ }
-let g:webdevicons_enable = 1
-let g:webdevicons_enable_vimfiler = 1
 let g:lightline = {
             \ 'colorscheme' : 'sonokai',
             \ 'active'      : {
@@ -37,26 +27,24 @@ let g:lightline = {
             \             [ 'readonly', 'filename', 'modified', 'time' ] ]
             \ },
             \ 'component_function': {
-            \   'time':'Showtime',
-            \   'filetype': 'MyFiletype',
-            \   'fileformat': 'MyFileformat',
+            \   'time':'Showtime'
             \ }
             \ }
-let g:lightline.subseparator = {
-            \   'left': '', 'right': '' 
-            \}
-let g:lightline.separator = {
-            \   'left': '', 'right': ''
-            \}
+"let g:lightline.subseparator = {
+"            \   'left': '', 'right': '' 
+"            \}
+"let g:lightline.separator = {
+"            \   'left': '', 'right': ''
+"            \}
 function! Showtime()
-    return strftime("%m/%d|%H:%M|%A")
+    return strftime("%m/%d|%H:%M|%A|🚀😃")
 endfunction
-function! MyFiletype()
-    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
-endfunction
-function! MyFileformat()
-    return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
-endfunction
+""function! MyFiletype()
+""    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+""endfunction
+""function! MyFileformat()
+""    return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+""endfunction
 """+--------------------lightline--------------------+"
 """+--------------------indentLine--------------------+"
 let g:indentLine_char_list = ['|']
@@ -111,7 +99,7 @@ let g:floaterm_borderchars = ['-','|','-','|','+','+','+','+']
 nmap <M-t> :FloatermNew sh<CR>
 "+--------------------floaterm--------------------+"
 "+--------------------markdown-preview--------------------+"
-""let g:mkdp_browser = 'chrome'
+let g:mkdp_browser = 'chrome'
 "+--------------------markdown-preview--------------------+"
 "+--------------------complete----------------------------+"
 imap <Tab>   <Plug>EasyCompTabTrigger
@@ -119,18 +107,18 @@ imap <S-Tab> <Plug>EasyCompShiftTabTrigger
 "+--------------------complete----------------------------+"
 "+--------------------neomake----------------------------+"
 call neomake#configure#automake('w')
-let g:neomake_open_list = 0
+let g:neomake_open_list = 1
 ""let g:neomake_logfile = '~/log/neomake.log'
 let g:neomake_error_sign = {
-            \ 'text': '',
+            \ 'text': '❌',
             \ 'texthl': 'NeomakeErrorSign',
             \ }
 let g:neomake_warning_sign = {
-            \   'text': '',
+            \   'text': '❗',
             \   'texthl': 'NeomakeWarningSign',
             \ }
 let g:neomake_message_sign = {
-            \   'text': 'M',
+            \   'text': '❔',
             \   'texthl': 'NeomakeMessageSign',
             \ }
 let g:neomake_info_sign = {
@@ -157,10 +145,21 @@ function! s:check_back_space() abort
 endfunction
 let g:coc_snippet_next = '<tab>'
 ""let g:coc_borderchars=['-','|','-','|','+','+','+','+']
+
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+nmap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
 nmap <leader>n <Plug>(coc-rename)
 nmap <leader>m :CocCommand document.renameCurrentWord<CR>
 nmap <leader>c <Plug>(coc-cursors-word)
@@ -174,6 +173,9 @@ xmap <silent> <leader>o <Plug>(coc-git-chunk-outer)
 
 nmap <leader>ca <plug>(coc-calc-result-append)
 nmap <leader>cr <plug>(coc-calc-result-replace)
+let g:coc_status_error_sign='❌'
+let g:coc_status_warning_sign='❗'
+
 
 " Use <c-space> to trigger completion.
 "+--------------------coc-------------------------+"
@@ -181,4 +183,3 @@ nmap <leader>cr <plug>(coc-calc-result-replace)
 let g:wildfire_objects = {
             \ "*" : ["i'", 'i"', "i)", "i]", "i}","i>","ip","it"]
             \ }
-"""--------------------vim-tex"""

@@ -3,6 +3,14 @@
     "suggest.noselect": true,
     "suggest.enablePreselect": false,
     "snippets.snipmate.enable": true,
+    "diagnostic.errorSign": "❌",
+    "diagnostic.warningSign": "❗",
+    "snippets.shortcut": "📜",
+    "tabnine.shortcut": "✨",
+    "coc.source.buffer.shortcut": "📗",
+    "coc.source.around.shortcut": "📙",
+    "coc.source.file.shortcut": "📁",
+    "python.jediShortcut": "🐍",
     "languageserver": {
         "fortran": {
             "command": "~/.local/bin/fortls",

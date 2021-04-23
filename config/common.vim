@@ -55,6 +55,7 @@ set expandtab
 set hlsearch
 set incsearch
 set cul
+set inccommand=nosplit
 "set spell spelllang=en_us
 set noswapfile
 set nobackup
