@@ -18,7 +18,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() },'for': [
 Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'xolox/vim-misc'
-Plug 'xolox/vim-easytags'
+Plug 'Euler-37/vim-easytags'
 call plug#end()
 let g:plug_threads=8
 """-----------------plug-----------------"
