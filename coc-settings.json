@@ -6,7 +6,6 @@
     "diagnostic.errorSign": "❌",
     "diagnostic.warningSign": "❗",
     "snippets.shortcut": "📜",
-    "tabnine.shortcut": "✨",
     "coc.source.buffer.shortcut": "📗",
     "coc.source.around.shortcut": "📙",
     "coc.source.file.shortcut": "📁",
@@ -14,10 +13,9 @@
     "languageserver": {
         "fortran": {
             "command": "~/.local/bin/fortls",
-            "args": ["--lowercase_intrinsics"],
+            "args": ["--lowercase_intrinsics","--variable_hover"],
             "filetypes": ["fortran"],
             "rootPatterns": ["~/.local/lib/python3.8/site-packages/fortls"]
         }
     }
 }
-

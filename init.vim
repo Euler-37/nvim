@@ -4,3 +4,4 @@ source ~/.config/nvim/config/plugin.vim
 if has('gui_running')
     source ~/.config/nvim/config/gui.vim
 endif
+

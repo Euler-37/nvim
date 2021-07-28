@@ -2,9 +2,13 @@ snippet	main
 	program main
 		implicit none
 		${0}
-	end program
+	end program main
 snippet	ii
 	integer::
+snippet itf
+	interface
+		${0}
+	end interface
 snippet	rr
 	real(8)::
 snippet	cc
@@ -68,30 +72,30 @@ snippet	mod
 		implicit none
 		${2}
 	${3:contains}
-	end module
+	end module $1
 snippet	sub
 	subroutine ${1}(${2})
 		${0}
-	end subroutine
+	end subroutine $1
 snippet	fi
 	function ${1}(${2}) result(f1)
 		integer::f1
 		${0}
-	end function
+	end function $1
 snippet	fr
 	function ${1}(${2}) result(f1)
 		real(8)::f1
 		${0}
-	end function
+	end function $1
 snippet	fc
 	function ${1}(${2}) result(f1)
 		complex(8)::f1
 		${0}
-	end function
+	end function $1
 snippet	type
 	type ${1}
 		${0}
-	end type
+	end type $1
 snippet	a
 	${1:a}(${2})${0}
 snippet	w
@@ -102,67 +106,6 @@ snippet	re
 	read(*,*)${0}
 snippet	rf
 	read(${1:10},*)${0}
-snippet	mat
-	module matmod
-		implicit none
-	contains
-		subroutine eig(a,e,N)
-			integer,intent(in)::N
-			real(8),intent(inout)::a(:,:)
-			real(8),intent(out):: e(:)
-			real(8):: work(5*N*N)
-			integer:: iflag
-			call dsyev("V","U",N,a,N,e,work,5*N*N,iflag)
-		end subroutine
-		subroutine inv(a,N)
-			integer,intent(in)::N
-			real(8),intent(inout)::a(:,:)
-			integer:: ipiv(N),info
-			real(8):: work(N)
-			call dgetrf(N,N,a,N,ipiv,info)
-			call dgetri(N,a,N,ipiv,work,N,info)
-		end subroutine
-		function ddgemm(a,b)result(c)
-			real(8), intent(in) :: a(:,:)
-			real(8), intent(in) :: b(:,:)
-			real(8),allocatable :: c(:,:)
-			character(len=1) :: o_transa
-			character(len=1) :: o_transb
-			real(8) :: o_alpha,o_beta
-			integer :: m,n,k,lda,ldb,ldc
-			o_alpha = 1.d0
-			o_beta  = 0.d0
-			o_transa = 'n'
-			o_transb = 'n'
-			k = size(a,2)
-			lda = size(a,1) !max(1,size(a,1))
-			ldb = k !size(b,1) !max(1,size(b,1))
-			ldc = lda !max(1,size(a,1))
-			m = lda !size(a,1)
-			n = size(b,2)
-			allocate(c(m,n))
-			call dgemm(o_transa,o_transb,m,n,k,o_alpha,a,lda,b,ldb,o_beta,c,ldc)
-		end function
-		function ddet(a,n1)result(d1)
-			implicit none
-			integer,intent(in)::n1
-			integer::ipiv(n1),info,i
-			real(8)::d1,a(n1,n1)
-			call dgetrf(n1,n1,a,n1,ipiv,info)
-			if(info/=0)then
-				d1=0.d0
-			else
-				d1=1.d0
-				do i=1,n1
-					if(ipiv(i)/= i)then
-						d1=-d1*a(i,i)
-					else
-						d1= d1*a(i,i)
-					end if
-				end do
-			end if
-		end function
-	end module
 snippet	ot
 	call omp_set_num_threads(4)
 snippet	ore
@@ -174,6 +117,7 @@ snippet	odo
 		${0}
 	!\$omp end parallel do
 snippet	mpi
+	include 'mpif.h'
 	integer::nprocs,ierr,myid
 	call mpi_init(ierr)
 	call mpi_comm_size(mpi_comm_world,nprocs,ierr)
@@ -184,4 +128,20 @@ snippet	bcast
 	call mpi_bcast(${1:para},${2:number},${3:datatype},${4:cpuid},mpi_comm_world,ierr)
 snippet	gather
 	call mpi_gather(${1:para},${2:number},${3:datatype},${4:para_recv},$2,$3,${4:0}mpi_comm_world,ierr)
+snippet time
+	integer::time1,time2
+	integer::time_rate=1000
+	call system_clock(time1,time_rate)
+	call system_clock(time2,time_rate)
+	write(*,*)(time2-time1)/real(time_rate)
+snippet eye
+	${1:a}=0.d0
+	do concurrent(i=1:n)
+		$1(i,i)=1.d0
+	end do
+snippet sum
+	${1:a}=0.d0
+	do i=1,${2:n}
+		$1=$1+${3:some}
+	end do
 
