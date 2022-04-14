@@ -1,88 +1,90 @@
-let mapleader ="\<space>"
 nnoremap <silent><leader><leader> /<++><CR>:nohlsearch<CR>c4l
-"""hi MatchParen ctermbg=red ctermfg=yellow
-""""braket complete
+
+"------------------------------------------------------------"
+"                exchange  line or word
+"------------------------------------------------------------"
 nnoremap <expr><C-up> line('.')== 1 ?'0':'ddkP'
 nnoremap <C-down> ddp
 nnoremap <C-right> xp
 nnoremap <C-left> xhP
-""
-"noremap i k
-"noremap k j
-"noremap j h
-"noremap h i
-""
-inoremap <M-i> <up>
-inoremap <M-k> <down>
-inoremap <M-j> <left>
-inoremap <M-l> <right>
-inoremap <M-I> <up><up><up><up><up>
-inoremap <M-K> <down><down><down><down><down>
-inoremap <M-J> <left><left><left><left><left>
-inoremap <M-L> <right><right><right><right><right>
-""
-inoremap <M-h> <Backspace>
 
+"------------------------------------------------------------"
+"                fast move
+"------------------------------------------------------------"
 nnoremap <M-i> 5<up>
 nnoremap <M-k> 5<down>
 nnoremap <M-j> 10<left>
 nnoremap <M-l> 10<right>
 
+"------------------------------------------------------------"
+"                 braket completion
+"------------------------------------------------------------"
 inoremap ' ''<left>
 inoremap " ""<left>
 inoremap ( ()<left>
 inoremap [ []<left>
 inoremap { {}<left>
-""inoremap ) <c-r>=ClosePair(')')<CR>
-""inoremap ] <c-r>=ClosePair(']')<CR>
-""inoremap } <c-r>=ClosePair('}')<CR>
-function! ClosePair(char)
-    if getline('.')[col('.')-1]==a:char
-        return "\<Right>"
-    else
-        return a:char
-    endif
-endfunction
-""complete
-""key word complete
-inoremap <C-k> <C-x><C-k>
-""line complete
+
+"------------------------------------------------------------"
+"                 line completion
+"------------------------------------------------------------"
 inoremap <C-l> <C-x><C-l>
-""dict complete
-inoremap <M-p> <C-x><C-o>
-""jump
+
+"------------------------------------------------------------"
+"                move to next line in insert mode
+"------------------------------------------------------------"
 inoremap <M-o> <ESC> o
-""termial
+
+"------------------------------------------------------------"
+"                split
+"------------------------------------------------------------"
 nnoremap <S-up> :res +5<CR>
 nnoremap <S-down> :res -5<CR>
 nnoremap <S-left> :vertical res -5<CR>
 nnoremap <S-right> :vertical res +5<CR>
 tnoremap <M-s> <C-w><C-w>
 nnoremap <M-s> <C-w><C-w>
-nnoremap <F5> :vert term<CR><C-w><C-w><CR>:vertical res +20<CR><C-w><C-w>
-""paste copy
+
+"------------------------------------------------------------"
+"                yank paste
+"------------------------------------------------------------"
 nnoremap <M-v> "+gp
-nnoremap <M-c> "+y<CR>
-""skip
+vnoremap Y "+y<CR>
+
+"------------------------------------------------------------"
+"                tab move
+"------------------------------------------------------------"
 nnoremap <expr><TAB> col('.')== col('$')-1 ?'^':'$'
 vnoremap <expr><TAB> col('.')== col('$')-1 ?'^':'$'
-"" buffer
-""nnoremap bb <C-6>
-"" delete until end of line
-inoremap <M-n> <ESC>A
-inoremap <M-m> <ESC>C
-"" delete blank line and eol space
-nnoremap <M-d>b :%s/\s\+$//g<CR>:nohl<CR>
-nnoremap <M-d>bl :g/^$/d<CR>:nohl<CR>
-"" skip ()
+
+
+"------------------------------------------------------------"
+"                move block
+"------------------------------------------------------------"
 nnoremap <M-b> %
 inoremap <M-b> <Esc>%a
-"" replace cursor word
+
+"------------------------------------------------------------"
+"                delete blank line
+"------------------------------------------------------------"
+nnoremap <M-d>b :%s/\s\+$//g<CR>:nohl<CR>
+nnoremap <M-d>bl :g/^$/d<CR>:nohl<CR>
+
+"------------------------------------------------------------"
+"                replace sub word under cursor
+"------------------------------------------------------------"
 nnoremap <M-r> :RepSub
-"" update vimrc
+
+
+"------------------------------------------------------------"
+"                vimrc
+"------------------------------------------------------------"
 nnoremap <leader>rc :vsplit $MYVIMRC<CR>
 nnoremap <leader>rs :source $MYVIMRC<CR>
-""add {['(" to a word
+"------------------------------------------------------------"
+"         add {['(" to a word
+"------------------------------------------------------------"
+
 nnoremap <M-'> ciw''<ESC>Pl
 nnoremap <M-"> ciw""<ESC>Pl
 nnoremap <M-(> ciw()<ESC>Pl
@@ -101,7 +103,6 @@ vnoremap <M-(> c()<ESC>Pla
 vnoremap <M-[> c[]<ESC>Pla
 vnoremap <M-{> c{}<ESC>Pla
 vnoremap <M-$> c$$<ESC>Pla
-
 nnoremap <M-d>) ci(<right><bs><bs><ESC>pl
 nnoremap <M-d>] ci[<right><bs><bs><ESC>pl
 nnoremap <M-d>} ci{<right><bs><bs><ESC>pl
@@ -112,11 +113,18 @@ nnoremap <M-d>" ci"<right><bs><bs><ESC>pl
 nnoremap <M-d>' ci'<right><bs><bs><ESC>pl
 inoremap <M-d>" <esc>ci"<right><bs><bs><ESC>pla
 inoremap <M-d>' <esc>ci'<right><bs><bs><ESC>pla
-"()"
-""delete  a 'word' in 'insert' ['mode']
+nnoremap <M-d>$ F$lvf$hxa<BS><BS><ESC>pl
+inoremap <M-d>$ <ESC>F$lvf$hxa<BS><BS><ESC>pla
+
+"------------------------------------------------------------"
+"delete  a word in insert mode
+"------------------------------------------------------------"
 inoremap <M-w> <esc>ciw
 nnoremap <M-w> ciw
-nnoremap <M-o> i<cr>
+
+"------------------------------------------------------------"
+"  vim visual block 
+"------------------------------------------------------------"
 nnoremap m2 <C-v>1jI
 nnoremap m3 <C-v>2jI
 nnoremap m4 <C-v>3jI
@@ -125,9 +133,31 @@ nnoremap m6 <C-v>5jI
 nnoremap m7 <C-v>6jI
 nnoremap m8 <C-v>7jI
 nnoremap m9 <C-v>8jI
-"" g+<Ctrl A>
-"" gv choose last chosen
-nnoremap <F5> :Run<CR>
+
+"------------------------------------------------------------"
+"  iab
+"------------------------------------------------------------"
+iab edn end
+iab ture true
+iab mian main
+
+"------------------------------------------------------------"
+"  comment
+"------------------------------------------------------------"
+autocmd FileType c nnoremap <buffer> ' ^i//<ESC>j
+autocmd FileType c nnoremap <buffer> " ^xxj
+autocmd FileType cpp nnoremap <buffer> ' ^i//<ESC>j
+autocmd FileType cpp nnoremap <buffer> " ^xxj
+autocmd FileType fortran nnoremap <buffer> ' ^i!<ESC>j
+autocmd FileType fortran vnoremap <buffer> ' ^I!<ESC>j
+autocmd FileType fortran nnoremap <buffer> " ^xj
+autocmd FileType fortran inoremap <buffer> ; %
+autocmd FileType python nnoremap <buffer> ' ^i#<ESC>j
+autocmd FileType python nnoremap <buffer> " ^xj
+
+"------------------------------------------------------------"
+"          special for different languages
+"------------------------------------------------------------"
 if expand("%:e") =~? '^\%(tex\|md\)$'
     inoremap $ $$<left>
     iab b \begin{<right>
@@ -138,41 +168,43 @@ elseif expand("%:e") == "f90"
     let fortran_more_precise=1
     let fortran_do_enddo=1
     let fortran_indent_more=1
-    nnoremap ' ^i!<ESC>
-    vnoremap ' ^I!<ESC>
-    nnoremap " ^x<ESC>
 elseif expand("%:e") =~? '^\%(f\|for\)$'
     setlocal ic
-    setlocal cc=6
-    setlocal cc+=73
-    hi ColorColumn guifg=#5369e5 guibg=#ff0f3b
-    ""hi ColorColumn guifg=black guibg=white
-    ""hi ColorColumn ctermfg=#5369e5 ctermbg=#ff0f3b
+    setlocal cc=6,73
+    hi ColorColumn guibg=green guifg=white 
     setlocal tabstop=2
     setlocal softtabstop=2
     setlocal shiftwidth=2
 elseif expand("%:e") =~? '^\%(c\|cpp\)$'
     inoremap { {}<left><CR><CR><up><BS><CR>
-    nnoremap ' ^i//<ESC>
-    nnoremap " ^xx<ESC>
 endif
 
-func! Run()
-    exec "w"
+"------------------------------------------------------------"
+"          $ object  $abnc$  c, y ,d 
+"------------------------------------------------------------"
+onoremap i$ :<c-U>normal!F$lv,h<CR>
+onoremap a$ :<c-U>normal!F$v,<CR>
+
+
+"------------------------------------------------------------"
+"          makefile
+"------------------------------------------------------------"
+if expand("%:e") == "f90"
     setlocal signcolumn=yes
-    if expand("%:e") == "f90"
-        setlocal makeprg=gfortran\ %\ -Wall\ -fopenmp\ -fcheck=all\ -o\ t1
-    elseif expand("%:e")== "c"
-        setlocal makeprg=gcc\ %\ -Wall\ -o\ t1
-    elseif expand("%:e")== "cpp"
-        setlocal makeprg=g++\ %\ -Wall\ -o\ t1
-    elseif expand("%:e")== "py"
-        setlocal makeprg=python\ %
-    elseif expand("%:e")== "tex"
-        setlocal makeprg=xelatex.exe\ -synctex=1\ --interaction=nonstopmode\ %
-    endif
-endfunc
-command! -nargs=0 Run call Run()
+    setlocal makeprg=gfortran\ %\ -Wall\ -fopenmp\ -fcheck=all\ -ffpe-trap=invalid,denormal,zero,overflow,underflow\ -g\ -fbacktrace\ -o\ t1
+elseif expand("%:e")== "c"
+    setlocal signcolumn=yes
+    setlocal makeprg=gcc\ %\ -Wall\ -o\ t1
+elseif expand("%:e")== "cpp"
+    setlocal signcolumn=yes
+    setlocal makeprg=g++\ %\ -Wall\ -o\ t1
+elseif expand("%:e")== "py"
+    setlocal signcolumn=yes
+    setlocal makeprg=python\ %
+elseif expand("%:e")== "tex"
+    setlocal signcolumn=yes
+    setlocal makeprg=xelatex.exe\ -synctex=1\ --interaction=nonstopmode\ %
+endif
 
 
 func! RepSub(para)
@@ -211,10 +243,30 @@ command! -nargs=0 F77 call Fortran77()
 
 
 "function! CleverTab()
-"        if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
-"                return "\<Tab>"
-"        else
-"                return "\<C-N>"
-"        endif
+"    if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
+"        return "\<Tab>"
+"    else
+"        return "\<C-p>"
+"    endif
 "endfunction
-"inoremap <Tab> <C-R>=CleverTab()<CR>
+""inoremap <Tab> <C-R>=CleverTab()<CR>
+""nnoremap <leader>g :set operatorfunc=<SID>GrepOperator<cr>g@
+""vnoremap <leader>g :<c-u>call <SID>GrepOperator(visualmode())<cr>
+""
+""function! s:GrepOperator(type)
+""    let saved_unnamed_register = @@
+""
+""    if a:type ==# 'v'
+""        normal! `<v`>y
+""    elseif a:type ==# 'char'
+""        normal! `[v`]y
+""    else
+""        return
+""    endif
+""
+""    silent execute "grep! -R " . shellescape(@@) . " ."
+""    copen
+""
+""    let @@ = saved_unnamed_register
+""endfunction
+

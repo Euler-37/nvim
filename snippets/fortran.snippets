@@ -128,9 +128,11 @@ snippet	bcast
 	call mpi_bcast(${1:para},${2:number},${3:datatype},${4:cpuid},mpi_comm_world,ierr)
 snippet	gather
 	call mpi_gather(${1:para},${2:number},${3:datatype},${4:para_recv},$2,$3,${4:0}mpi_comm_world,ierr)
+snippet reduce
+	call mpi_allreduce(${1:para},${2:temp},${3:number},${4:datatype},mpi_sum,mpi_comm_world,ierr)
 snippet time
 	integer::time1,time2
-	integer::time_rate=1000
+	integer::time_rate
 	call system_clock(time1,time_rate)
 	call system_clock(time2,time_rate)
 	write(*,*)(time2-time1)/real(time_rate)
@@ -139,9 +141,15 @@ snippet eye
 	do concurrent(i=1:n)
 		$1(i,i)=1.d0
 	end do
+snippet barrier
+	call mpi_barrier(mpi_comm_world,ierr)
 snippet sum
 	${1:a}=0.d0
 	do i=1,${2:n}
 		$1=$1+${3:some}
 	end do
+snippet block
+	${1:test}:block
+		${0}
+	end block ${1}
 
